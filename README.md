@@ -7,7 +7,7 @@ A clinical reasoning framework using **multi-agent debate among large language m
 Large Language Models (LLMs) such as GPT-4 or DeepSeek show promising performance on multiple-choice clinical reasoning tasks. However, relying on a single response often misses diverse reasoning paths or fails to explore counterarguments. Our framework mitigates this by simulating debate between agents with opposing perspectives (Pro and Con), followed by a consensus judgment.
 
 ## 🧱 System Architecture
-![Framework Overview](framework.png)
+![Framework Overview](figures/framework.png)
 ## 🚀 Features
 
 - Multi-agent architecture with **Pro**, **Con**, **Judge**, and **Consensus** agents
@@ -53,14 +53,14 @@ python mistral_deepseek.py    # For model comparison (e.g., Mistral agent and  D
 ```
 ## 🖥️ Web Frontend 
 We also provide a web-based frontend is also available for visualizing the system’s outputs. Users can interact with the diagnostic framework and observe the reasoning process in real time.
-![web](web0.jpg)
+![web](figures/web0.jpg)
 
 ## 🧾 Demo
 Below are examples demonstrating how the system performs a structured diagnostic debate and visual reasoning trace.\
 **3-Rounds Debate**
-![debate](web1.jpg)
+![debate](figures/web1.jpg)
 **Mermaid Flow Chart**
-![flow_chart](webchart.jpg)
+![flow_chart](figures/webchart.jpg)
 
 ## 📁 Directory Structure
 ```
