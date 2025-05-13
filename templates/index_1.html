@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Debate System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4a6fa5;
+      --secondary-color: #166088;
+      --accent-color: #4fc3f7;
+      --light-bg: #f5f9ff;
+      --dark-bg: #e3f2fd;
+      --text-color: #333;
+      --text-light: #666;
+      --border-color: #d1e3ff;
+      --success-color: #4caf50;
+      --warning-color: #ff9800;
+      --error-color: #f44336;
+      --judge1-color: #e3f2fd;
+      --judge2-color: #bbdefb;
+      --judge3-color: #90caf9;
+    }
+    
+    body {
+      font-family: 'Noto Sans', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8fafc;
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 2.2rem;
+    }
+    
+    h2 {
+      color: var(--secondary-color);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      margin-top: 30px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      background: white;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+    
+    .section-box {
+      background-color: var(--light-bg);
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--accent-color);
+    }
+    
+    textarea {
+      width: 97%;
+      height: 150px;
+      padding: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 16px;
+      margin-bottom: 15px;
+      transition: border 0.3s, box-shadow 0.3s;
+      resize: vertical;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+    }
+    
+    textarea::placeholder {
+      color: #aaa;
+    }
+    
+    button, select {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    button:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    select {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      margin-right: 15px;
+      margin-bottom: 15px;
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+    }
+    
+    pre, .mermaid {
+      white-space: pre-wrap;
+      background-color: var(--light-bg);
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      border-left: 4px solid var(--accent-color);
+    }
+    
+    .mermaid {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .loading {
+      color: var(--text-light);
+      font-style: italic;
+    }
+    
+    .error {
+      color: var(--error-color);
+      background-color: #ffebee;
+      padding: 15px;
+      border-radius: 6px;
+      border-left: 4px solid var(--error-color);
+    }
+    
+    .success {
+      color: var(--success-color);
+      background-color: #e8f5e9;
+      padding: 15px;
+      border-radius: 6px;
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .icon {
+      margin-right: 8px;
+      font-size: 1.2em;
+    }
+    
+    .flex-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .label {
+      font-weight: 500;
+      margin-right: 10px;
+      color: var(--secondary-color);
+    }
+    
+    /* 诊断结果专用样式 */
+    .diagnosis-container {
+      font-family: 'Noto Sans', sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .diagnosis-header {
+      font-size: 1.5rem;
+      color: #166088;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #d1e3ff;
+    }
+    
+    .diagnosis-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .diagnosis-subheader {
+      font-size: 1.2rem;
+      color: #4a6fa5;
+      margin: 1.2rem 0 0.8rem;
+      font-weight: 500;
+    }
+    
+    .argument-group {
+      margin-bottom: 1.8rem;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .argument-title {
+      padding: 0.8rem 1rem;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+    }
+    
+    .argument-title .icon {
+      margin-right: 0.6rem;
+    }
+    
+    .pro-title {
+      background-color: #4caf50;
+    }
+    
+    .con-title {
+      background-color: #f44336;
+    }
+    
+    .argument-content {
+      padding: 1rem;
+      background-color: white;
+    }
+    
+    .strengths-weaknesses {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.8rem;
+    }
+    
+    @media (max-width: 768px) {
+      .strengths-weaknesses {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+    
+    .strengths, .weaknesses {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+    
+    .strengths {
+      background-color: #e8f5e9;
+      border-left: 4px solid #4caf50;
+    }
+    
+    .weaknesses {
+      background-color: #ffebee;
+      border-left: 4px solid #f44336;
+    }
+    
+    .strengths h4, .weaknesses h4 {
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .strengths h4 {
+      color: #2e7d32;
+    }
+    
+    .weaknesses h4 {
+      color: #c62828;
+    }
+    
+    .strengths h4 .icon, .weaknesses h4 .icon {
+      margin-right: 0.5rem;
+    }
+    
+    .decision-box {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 1.2rem;
+      border-radius: 6px;
+      margin: 1.5rem 0;
+    }
+    
+    .decision-title {
+      font-weight: 600;
+      color: #1565c0;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .decision-title .icon {
+      margin-right: 0.6rem;
+    }
+    
+    .justification-list {
+      padding-left: 1.5rem;
+    }
+    
+    .justification-list li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .highlight {
+      font-style: italic;
+      color: #166088;
+      font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section {
+        padding: 15px;
+      }
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: false,
+      theme: 'default',
+      themeVariables: {
+        primaryColor: '#e3f2fd',
+        primaryBorderColor: '#4a6fa5',
+        primaryTextColor: '#333',
+        lineColor: '#166088'
+      }
+    });
+    window.mermaidRender = () => mermaid.run();
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><i class="fas fa-brain icon"></i>Medical Reasoning Debate System</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="section">
+      <h2><i class="fas fa-file-medical icon"></i>Case Description</h2>
+      <label for="case_input" class="label">Patient Symptoms:</label>
+      <textarea id="case_input" placeholder="Describe the patient's symptoms, history, and any relevant findings here..."></textarea>
+      <button onclick="runDebate()" id="run_button">
+        <i class="fas fa-play icon"></i>Run Debate
+      </button>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-diagnoses icon"></i>Diagnosis Results</h2>
+      <div id="answer_output" class="section-box loading">
+        Enter a case description and click "Run Debate" to start the analysis.
+      </div>
+
+      <div class="flex-row">
+        <h2 style="margin: 0; border: none;"><i class="fas fa-comment-medical icon"></i>Reasoning Transcript</h2>
+        <label for="round_selector_reasoning" class="label">Round:</label>
+        <select id="round_selector_reasoning" onchange="updateReasoning()" disabled>
+          <option value="">Select a round</option>
+        </select>
+      </div>
+      <div id="reasoning_output" class="section-box">
+        Debate results will appear here after analysis.
+      </div>
+
+      <div class="flex-row">
+        <h2 style="margin: 0; border: none;"><i class="fas fa-balance-scale icon"></i>Evaluation</h2>
+        <label for="round_selector_eval" class="label">Round:</label>
+        <select id="round_selector_eval" onchange="updateEvaluation()" disabled>
+          <option value="">Select a round</option>
+        </select>
+      </div>
+      <div id="evaluation_output" class="section-box">
+        Evaluations will appear here after analysis.
+      </div>
+
+      <h2><i class="fas fa-project-diagram icon"></i>Diagnosis Flowchart</h2>
+      <div id="graph_output" class="mermaid">
+        Flowchart visualization will appear here.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let globalData = null;
+
+    async function runDebate() {
+      const caseText = document.getElementById("case_input").value;
+      const runButton = document.getElementById("run_button");
+
+      if (!caseText.trim()) {
+        document.getElementById("answer_output").innerHTML = 
+          '<div class="error">Please enter a case description to analyze.</div>';
+        return;
+      }
+
+      // Update UI for loading state
+      runButton.disabled = true;
+      runButton.innerHTML = '<i class="fas fa-spinner fa-spin icon"></i>Processing...';
+      document.getElementById("answer_output").innerHTML = 
+        '<div class="loading"><i class="fas fa-spinner fa-spin icon"></i>Analyzing case... This may take a moment.</div>';
+      document.getElementById("reasoning_output").innerHTML = 
+        '<div class="loading">Generating reasoning transcript...</div>';
+      document.getElementById("evaluation_output").innerHTML = 
+        '<div class="loading">Preparing evaluations...</div>';
+      document.getElementById("graph_output").innerHTML = 
+        '<div class="loading">Building flowchart visualization...</div>';
+
+      try {
+        const res = await fetch("/run", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ case_text: caseText })
+        });
+
+        if (!res.ok) throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+
+        const data = await res.json();
+        globalData = data;
+
+        // Display final diagnosis with formatted output
+        const answerBox = document.getElementById("answer_output");
+        if (data.consensus) {
+          answerBox.innerHTML = formatDiagnosisOutput(data.consensus);
+        } else {
+          answerBox.innerHTML = '<div class="error">No consensus diagnosis reached.</div>';
+        }
+
+        // Populate round selectors
+        const rounds = data.rounds?.map((_, idx) => idx + 1) || [];
+        const selectorReason = document.getElementById("round_selector_reasoning");
+        const selectorEval = document.getElementById("round_selector_eval");
+        
+        selectorReason.innerHTML = selectorEval.innerHTML = "";
+        if (rounds.length > 0) {
+          rounds.forEach(r => {
+            selectorReason.appendChild(new Option(`Round ${r}`, r));
+            selectorEval.appendChild(new Option(`Round ${r}`, r));
+          });
+          selectorReason.disabled = false;
+          selectorEval.disabled = false;
+          
+          // Initialize round 1 display
+          selectorReason.value = 1;
+          selectorEval.value = 1;
+          updateReasoning();
+          updateEvaluation();
+        } else {
+          document.getElementById("reasoning_output").innerHTML = 
+            '<div class="error">No reasoning data available.</div>';
+          document.getElementById("evaluation_output").innerHTML = 
+            '<div class="error">No evaluation data available.</div>';
+        }
+
+        // Display flowchart if available
+        const graphEl = document.getElementById("graph_output");
+        if (data.mermaid_code) {
+          graphEl.textContent = data.mermaid_code;
+          setTimeout(() => {
+            try {
+              window.mermaidRender();
+            } catch (err) {
+              graphEl.innerHTML = `<div class="error">Failed to render flowchart: ${err.message}</div>`;
+            }
+          }, 50);
+        } else {
+          graphEl.innerHTML = '<div class="error">No flowchart data available.</div>';
+        }
+
+      } catch (err) {
+        console.error("Error:", err);
+        document.getElementById("answer_output").innerHTML = 
+          `<div class="error"><i class="fas fa-exclamation-circle icon"></i>Failed to analyze case: ${err.message}</div>`;
+      } finally {
+        runButton.disabled = false;
+        runButton.innerHTML = '<i class="fas fa-play icon"></i>Run Debate';
+      }
+    }
+
+    function formatDiagnosisOutput(text) {
+      if (!text) return '<div class="error">No diagnosis available.</div>';
+      
+      if (text.includes("### **Summary of Arguments**")) {
+        return `
+          <div class="diagnosis-container">
+            <h2 class="diagnosis-header">Final Diagnosis</h2>
+            ${formatStructuredDiagnosis(text)}
+          </div>
+        `;
+      } else {
+        return `
+          <div class="diagnosis-container">
+            <h2 class="diagnosis-header">Final Diagnosis</h2>
+            <div class="section-box">${formatText(text)}</div>
+          </div>
+        `;
+      }
+    }
+
+    function formatStructuredDiagnosis(text) {
+      const sections = text.split("### ");
+      let html = '';
+      
+      sections.forEach(section => {
+        if (!section.trim()) return;
+        
+        if (section.startsWith("**Summary of Arguments**")) {
+          html += `<div class="diagnosis-section">
+            <h3 class="diagnosis-subheader">Summary of Arguments</h3>`;
+          
+          const proConSections = section.split("#### ");
+          proConSections.forEach(proCon => {
+            if (proCon.startsWith("**Pro Physician")) {
+              html += formatArgument(proCon, 'pro');
+            } else if (proCon.startsWith("**Con Physician")) {
+              html += formatArgument(proCon, 'con');
+            }
+          });
+          
+          html += `</div>`;
+        } else if (section.startsWith("**Decision:")) {
+          const decisionText = section.replace("**Decision:", "").split("### **Justification**")[0];
+          const justificationText = section.includes("### **Justification**") 
+            ? section.split("### **Justification**")[1] 
+            : '';
+          
+          html += `<div class="decision-box">
+            <h3 class="decision-title"><i class="fas fa-gavel icon"></i>Decision: ${formatText(decisionText)}</h3>`;
+          
+          if (justificationText) {
+            html += `<h4 class="diagnosis-subheader">Justification</h4>
+              <ol class="justification-list">${formatJustification(justificationText)}</ol>`;
+          }
+          
+          html += `</div>`;
+        }
+      });
+      
+      return html;
+    }
+
+    function formatArgument(text, type) {
+      const title = text.split("**")[1];
+      const content = text.substring(text.indexOf("**", 2) + 2);
+      
+      let strengths = '';
+      let weaknesses = '';
+      
+      if (content.includes("**Strengths:**")) {
+        const strengthsContent = content.split("**Strengths:**")[1].split("**Weaknesses:**")[0];
+        strengths = formatListItems(strengthsContent);
+      }
+      
+      if (content.includes("**Weaknesses:**")) {
+        const weaknessesContent = content.split("**Weaknesses:**")[1];
+        weaknesses = formatListItems(weaknessesContent);
+      }
+      
+      return `
+        <div class="argument-group">
+          <div class="argument-title ${type}-title">
+            <i class="fas ${type === 'pro' ? 'fa-check-circle' : 'fa-times-circle'} icon"></i>
+            ${title}
+          </div>
+          <div class="argument-content">
+            <div class="strengths-weaknesses">
+              <div class="strengths">
+                <h4><i class="fas fa-thumbs-up icon"></i>Strengths:</h4>
+                ${strengths}
+              </div>
+              <div class="weaknesses">
+                <h4><i class="fas fa-thumbs-down icon"></i>Weaknesses:</h4>
+                ${weaknesses}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function formatListItems(text) {
+      const items = text.split('\n').filter(line => line.trim().startsWith('-'));
+      if (items.length === 0) return '<ul><li>No items listed</li></ul>';
+      
+      let html = '<ul>';
+      items.forEach(item => {
+        html += `<li>${formatText(item.replace('-', '').trim())}</li>`;
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    function formatJustification(text) {
+      const items = text.split('\n').filter(line => line.trim().startsWith('1.'));
+      if (items.length === 0) return '<li>No justification provided</li>';
+      
+      let html = '';
+      items.forEach(item => {
+        const parts = item.split(':');
+        if (parts.length > 1) {
+          html += `<li><strong>${parts[0].trim()}:</strong> ${formatText(parts.slice(1).join(':').trim())}</li>`;
+        } else {
+          html += `<li>${formatText(item.replace(/^\d+\./, '').trim())}</li>`;
+        }
+      });
+      return html;
+    }
+
+    function updateReasoning() {
+      const idx = parseInt(document.getElementById("round_selector_reasoning").value) - 1;
+      const round = globalData?.rounds?.[idx];
+      const output = document.getElementById("reasoning_output");
+      
+      if (round) {
+        output.innerHTML = `
+          <div style="margin-bottom: 15px;">
+            <strong style="color: var(--secondary-color);">Round ${round.round}</strong>
+          </div>
+          <div style="background: #e8f5e9; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+            <strong style="color: var(--success-color);">Pro Position:</strong><br>
+            ${formatText(round.pro)}
+          </div>
+          <div style="background: #ffebee; padding: 15px; border-radius: 6px;">
+            <strong style="color: var(--error-color);">Con Position:</strong><br>
+            ${formatText(round.con)}
+          </div>
+        `;
+      } else {
+        output.innerHTML = '<div class="error">No data available for selected round.</div>';
+      }
+    }
+
+    function updateEvaluation() {
+      const idx = parseInt(document.getElementById("round_selector_eval").value) - 1;
+      const round = globalData?.rounds?.[idx];
+      const output = document.getElementById("evaluation_output");
+      
+      if (round?.evaluation) {
+        let evaluationHTML = '';
+        round.evaluation.forEach((judge, i) => {
+          const bgColor = i === 0 ? 'var(--judge1-color)' : 
+                         i === 1 ? 'var(--judge2-color)' : 'var(--judge3-color)';
+          const borderColor = i === 0 ? '#4a6fa5' : 
+                             i === 1 ? '#166088' : '#0d47a1';
+          
+          evaluationHTML += `
+            <div style="background: ${bgColor}; 
+                        padding: 15px; 
+                        border-radius: 6px; 
+                        border-left: 4px solid ${borderColor};
+                        margin-bottom: ${i === round.evaluation.length - 1 ? '0' : '15px'};">
+              <strong style="color: ${borderColor};">Judge ${i+1} (${judge.model || 'Unknown'}):</strong><br>
+              ${formatText(judge.score)}
+            </div>
+          `;
+        });
+        output.innerHTML = evaluationHTML;
+      } else {
+        output.innerHTML = '<div class="error">No evaluation data available for selected round.</div>';
+      }
+    }
+    
+    function formatText(text) {
+      if (!text) return '';
+      return text.replace(/\n/g, '<br>')
+                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                 .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    }
+  </script>
+</body>
+</html>
