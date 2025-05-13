@@ -22,14 +22,14 @@ We evaluate our framework on two clinical reasoning datasets (315 data):
 
 ### MedQA (USMLE Multiple Choice)
 
-| Model                     | Accuracy (%) |
-|--------------------------|--------------|
-| Mistral (single)         | 34.3         |
-| GPT-3.5                  | 65.0         |
-| GPT-4                    | 83.9         |
-| DeepSeek (single agent)  | 82.9         |
-| **Ours (multi-agent)**   | **87.3**     |
-| Two-option agents        | 92.1         |
+| Model                   | Accuracy (%) |
+| ----------------------- | ------------ |
+| Mistral (single)        | 34.3         |
+| GPT-3.5                 | 65.0         |
+| GPT-4                   | 83.9         |
+| DeepSeek (single agent) | 82.9         |
+| **Ours (multi-agent)**  | **87.3**     |
+| Two-option agents       | 92.1         |
 
 ### Kaggle Disease Symptom Prediction
 
@@ -53,6 +53,13 @@ python mistral_deepseek.py    # For model comparison (e.g., Mistral agent and  D
 ```
 ## 🖥️ Web Frontend 
 We also provide a web-based frontend is also available for visualizing the system’s outputs. Users can interact with the diagnostic framework and observe the reasoning process in real time.
+
+To run the web frontend, follow the following step:
+
+```python
+cd Multi-Agent-Diagnose-System
+python3 app.py
+```
 ![web](figures/web0.jpg)
 
 ## 🧾 Demo
