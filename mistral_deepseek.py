@@ -11,7 +11,7 @@ mistral_client = Mistral(api_key=api_key)
 
 # DeepSeek Client for Con agent
 deepseek_client = openai.OpenAI(
-    api_key="",
+    api_key="my_api_key",
     base_url="https://api.deepseek.com/v1"
 )
 
